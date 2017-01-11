@@ -88,15 +88,18 @@ public class SpringerGUI extends JFrame {
 		super.paint(g);
 		List<Step> steps = controller.getSteps();
 		for(int i = 0; i < steps.size()-1; i++) {
-			Field old = controller.getField(steps.get(i).getField());
-			Field next = controller.getField(steps.get(i+1).getField());
-			g.setColor(Color.black);
-			g.drawLine(
-					old.getX() + old.getWidth()/2 + getWidthDiff(),
-					old.getY() + old.getHeight()/2 + getHeightDiff(),
-					next.getX() + next.getWidth()/2 + getWidthDiff(),
-					next.getY() + next.getHeight()/2 + getHeightDiff()
-					);
+			try {
+				Field old = controller.getField(steps.get(i).getField());
+				Field next = controller.getField(steps.get(i+1).getField());
+				g.setColor(Color.black);
+				g.drawLine(
+						old.getX() + old.getWidth()/2 + getWidthDiff(),
+						old.getY() + old.getHeight()/2 + getHeightDiff(),
+						next.getX() + next.getWidth()/2 + getWidthDiff(),
+						next.getY() + next.getHeight()/2 + getHeightDiff()
+						);
+			}
+			catch(Exception ex) {}
 		}
 	}
 	
