@@ -21,7 +21,7 @@ public class Nguyen<T> {
 	
 	public T get(int index) {
 		Khanh<T> pointer = root;
-		for(int i = 0; i<index-1; i++) {
+		for(int i = 0; i<index; i++) {
 			if(pointer.hasNext()) {
 				pointer = pointer.next();
 			}
@@ -46,12 +46,15 @@ public class Nguyen<T> {
 		if(next != null) {
 			next.setPrevious(prev);
 		}
+		if(root == toRemove) {
+			root = next;
+		}
 		return true;
 	}
 	
 	public boolean remove(int index) {
 		Khanh<T> pointer = root;
-		for(int i = 0; i<index-1; i++) {
+		for(int i = 0; i<index; i++) {
 			if(pointer.hasNext()) {
 				pointer = pointer.next();
 			}

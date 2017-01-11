@@ -21,6 +21,7 @@ public class ListTest {
 
 	@Test
 	public void atestAdd() {
+		System.out.println("#### Add ####");
 		list.add("Emanuel");
 		list.add("Minhkhanh");
 		list.add("Patric");
@@ -32,9 +33,12 @@ public class ListTest {
 	
 	@Test
 	public void btestRemoveIndex() {
+		System.out.println("#### Remove Index ####");
 		assertTrue(list.remove(3));
 		list.print();
 		assertTrue(list.remove(2));
+		list.print();
+		assertTrue(list.remove(0));
 		list.print();
 		boolean remove = list.remove(4);
 		System.out.println("removing 4th element: " + remove);
@@ -43,16 +47,19 @@ public class ListTest {
 	
 	@Test
 	public void ctestGet() {
-		String johannes = list.get(2);
-		System.out.println(johannes);
-		assertTrue(johannes.equals("Johannes"));
+		System.out.println("#### Get ####");
+		list.print();
+		String mk = list.get(0);
+		System.out.println(mk);
+		assertTrue(mk.equals("Minhkhanh"));
 	}
 	
 	@Test
 	public void dtestRemoveElement() {
+		System.out.println("#### Remove Element ####");
 		assertTrue(list.remove("Leon"));
 		list.print();
-		assertTrue(!list.remove("Minhkhanh"));
+		assertTrue(!list.remove("Johannes"));
 		list.print();
 	}
 
