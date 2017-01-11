@@ -8,7 +8,7 @@ import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.UIManager;
 
-import com.ubs.springer.controller.SpringerController;
+import com.ubs.springer.controller.SController;
 import com.ubs.springer.data.Field;
 import com.ubs.springer.data.Step;
 
@@ -21,9 +21,9 @@ public class SpringerGUI extends JFrame {
 	
 	private int sizeY;
 	private int sizeX;
-	private SpringerController controller;
+	private SController controller;
 	
-	public SpringerGUI(SpringerController controller, int sizeX, int sizeY) {
+	public SpringerGUI(SController controller, int sizeX, int sizeY) {
 		super();
 		
 		this.controller = controller;
@@ -44,7 +44,7 @@ public class SpringerGUI extends JFrame {
 		
 		for(int x = 0; x < sizeX; x++) {
 			for(int y = 0; y < sizeY; y++) {
-				getFields()[x][y] = new Field(this);
+				getFields()[x][y] = new Field();
 				add(getFields()[x][y]);
 			}
 		}
@@ -66,8 +66,10 @@ public class SpringerGUI extends JFrame {
 			first.setStart(true);
 		}
 		if(steps.size() > 1) {
-			for(Step s : controller.getSteps()) {
-				controller.getField(s.getField()).setCurrent(false);
+			for(int i = 0; i < getFields().length; i++) {
+				for(int y = 0; y < getFields()[i].length; y++) {
+					controller.getFields()[i][y].setCurrent(false);
+				}
 			}
 			Field newest = controller.getField(steps.get(steps.size()-1).getField());
 			newest.setCurrent(true);
@@ -77,6 +79,7 @@ public class SpringerGUI extends JFrame {
 				controller.getFields()[i][y].repaint();
 			}
 		}
+		
 		repaint();
 	}
 	
@@ -89,12 +92,20 @@ public class SpringerGUI extends JFrame {
 			Field next = controller.getField(steps.get(i+1).getField());
 			g.setColor(Color.black);
 			g.drawLine(
-					new Double(old.getBounds().getCenterX()).intValue(),
-					new Double(old.getBounds().getCenterY()).intValue(),
-					new Double(next.getBounds().getCenterX()).intValue(),
-					new Double(next.getBounds().getCenterY()).intValue()
+					old.getX() + old.getWidth()/2 + getWidthDiff(),
+					old.getY() + old.getHeight()/2 + getHeightDiff(),
+					next.getX() + next.getWidth()/2 + getWidthDiff(),
+					next.getY() + next.getHeight()/2 + getHeightDiff()
 					);
 		}
+	}
+	
+	private int getWidthDiff() {
+		return 8;
+	}
+	
+	private int getHeightDiff() {
+		return 30;
 	}
 
 }

@@ -1,21 +1,24 @@
 package com.ubs.springer.controller;
 
 import java.awt.Point;
+import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.swing.event.ChangeEvent;
 
 import com.ubs.springer.data.Field;
 import com.ubs.springer.data.Step;
 import com.ubs.springer.gui.InfoBox;
 import com.ubs.springer.gui.SpringerGUI;
 
-public class SpringerController {
+public class SpringerController implements SController {
 	
 	public SpringerGUI gui;
 	private InfoBox info;
 	private List<Step> steps = new ArrayList<Step>();
-	private static final int SIZE_X = 8;
-	private static final int SIZE_Y = 8;
+	private static final int SIZE_X = 5;
+	private static final int SIZE_Y = 5;
 	
 	private static final int START_X = 0;
 	private static final int START_Y = 0;
@@ -28,7 +31,7 @@ public class SpringerController {
 	private int stepsTotal = 0;
 	private int rollbacks = 0;
 	
-	private long delay = 1000;
+	private long delay = 1;
 	
 	private boolean closed = false;
 	
@@ -40,7 +43,7 @@ public class SpringerController {
 		// init
 		fields = new Field[SIZE_X][SIZE_Y];
 		gui = new SpringerGUI(this, SIZE_X, SIZE_Y);
-		info = new InfoBox(SIZE_X*SIZE_Y, gui);
+		info = new InfoBox(SIZE_X*SIZE_Y, gui, this);
 		steps.add(new Step(new Point(START_X, START_Y)));
 		getField(steps.get(0).getField()).setStart(true);
 		started = System.nanoTime();
@@ -88,107 +91,15 @@ public class SpringerController {
 				}
 			}
 		}
-		/*while(true) {
-			next = getField(current.getNextField());
-			if(next == null) {
-				// Check for next
-				if(current.hasNext()) {
-					current.next();
-				}
-				else {
-					break;
-				}
-			}
-			else {
-				if(next.isVisited()) {
-					// Check for next
-					if(current.hasNext()) {
-						current.next();
-					}
-					else {
-						break;
-					}
-				}
-				// Valid field
-				else {
-					Step nextStep = new Step(current.getNextField());
-					steps.add(nextStep);
-					found = true;
-					break;
-				}
-			}
-		}*/
+		
 		if(!found) {
 			rollback();
 		}
 		gui.update();
 		stepsTotal++;
 		ended = System.nanoTime();
-		info.updateInfo(steps.size(), stepsTotal, rollbacks, started, ended, closed);		
+		info.updateInfo(steps.size(), stepsTotal, rollbacks, started, ended, closed, false);		
 	}
-	
-	/*public void doRound1() {
-		// Make last not current
-		if(steps.size() >= 2) {
-			Step last = steps.get(steps.size()-2);
-			getField(last.getField()).setCurrent(false);
-		}
-		
-		// Set flags for current
-		Step current = steps.get(steps.size()-1);
-		Field currentField = getField(current.getField());
-		currentField.setCurrent(true);
-		currentField.setVisited(true);
-		
-		// Get next field
-		Field next = null;
-		// Next valid field
-		//boolean found = false;
-		while(next == null && current.hasNext()) {
-		//while((next == null || next.isVisited()) && current.hasNext()) {
-			current.next();
-			next = getField(current.getNextField());
-			/*if(next != null) {
-				if(!next.isVisited()) {
-					Step nextStep = new Step(current.getNextField());
-					steps.add(nextStep);
-					found = true;
-				}
-				else {
-					current.next();
-				}
-			}
-			else {
-				current.next();
-			}
-		}
-		if(!found) {
-			rollback();
-		}
-		if(next != null) {
-			// Next not visited
-			while((next == null || next.isVisited()) && current.hasNext()) {
-				current.next();
-				next = getField(current.getNextField());
-			}
-			// Next valid and not visited
-			if(next != null && !next.isVisited()) {
-				Step nextStep = new Step(current.getNextField());
-				steps.add(nextStep);
-			}
-			// No valid field found
-			else {
-				rollback();
-			}
-		}
-		// No valid field found
-		else {
-			rollback();
-		}
-		stepsTotal++;
-		ended = System.nanoTime();
-		info.updateInfo(steps.size(), stepsTotal, rollbacks, started, ended, closed);
-	}*/
 	
 	public void rollback() {
 		rollbacks++;
@@ -213,5 +124,25 @@ public class SpringerController {
 	}
 	
 	public List<Step> getSteps() { return steps; }
+
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void stateChanged(ChangeEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public long getDelay() {
+		return delay;
+	}
+
+	public void setDelay(long delay) {
+		this.delay = delay;
+	}
 	
 }

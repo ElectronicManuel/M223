@@ -2,7 +2,6 @@ package com.ubs.springer.data;
 
 import java.awt.Color;
 
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 public class Field extends JPanel {
@@ -15,14 +14,10 @@ public class Field extends JPanel {
 	private boolean current = false;
 	private boolean start = false;
 	
-	private JFrame gui;
-	
-	public Field(JFrame gui) {
+	public Field() {
 		setBorder(null);
 		setOpaque(true);
-		this.gui = gui;
 		repaint();
-		gui.repaint();
 	}
 	
 	public void repaint() {
