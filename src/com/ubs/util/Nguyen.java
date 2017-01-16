@@ -1,8 +1,11 @@
 package com.ubs.util;
 
-public class Nguyen<T> {
+import java.util.Iterator;
+
+public class Nguyen<T> implements Iterable<T>, Iterator<T> {
 	
 	private Khanh<T> root;
+	private Khanh<T> current;
 	
 	public void add(T value) {
 		Khanh<T> toAdd = new Khanh<T>(value);
@@ -124,4 +127,32 @@ public class Nguyen<T> {
 		System.out.println(this);
 	}
 
+	@Override
+	public Iterator<T> iterator() {
+		return this;
+	}
+
+	@Override
+	public boolean hasNext() {
+		if(current != null) {
+    		return current.hasNext();
+    	}
+    	else {
+    		return true;
+    	}
+	}
+
+	@Override
+	public T next() {
+        if(current != null) {
+        	current = current.next();
+        	return current.getValue();
+        }
+        if(root != null) {
+        	current = root;
+        	return current.getValue();
+        }
+        return null;
+	}
+	
 }

@@ -32,7 +32,18 @@ public class ListTest {
 	}
 	
 	@Test
-	public void btestRemoveIndex() {
+	public void btestIterate() {
+		System.out.println("#### Iterate ####");
+		int i = 0;
+		for(String s : list) {
+			i++;
+			System.out.println(s);
+		}
+		assertTrue(i == 5);
+	}
+	
+	@Test
+	public void ctestRemoveIndex() {
 		System.out.println("#### Remove Index ####");
 		assertTrue(list.remove(3));
 		list.print();
@@ -46,7 +57,7 @@ public class ListTest {
 	}
 	
 	@Test
-	public void ctestGet() {
+	public void dtestGet() {
 		System.out.println("#### Get ####");
 		list.print();
 		String mk = list.get(0);
@@ -55,7 +66,7 @@ public class ListTest {
 	}
 	
 	@Test
-	public void dtestRemoveElement() {
+	public void etestRemoveElement() {
 		System.out.println("#### Remove Element ####");
 		assertTrue(list.remove("Leon"));
 		list.print();
