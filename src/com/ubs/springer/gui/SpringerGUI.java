@@ -8,7 +8,7 @@ import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.UIManager;
 
-import com.ubs.springer.controller.SController;
+import com.ubs.springer.controller.SpringerControllerRecursive;
 import com.ubs.springer.data.Field;
 import com.ubs.springer.data.Step;
 
@@ -21,9 +21,9 @@ public class SpringerGUI extends JFrame {
 	
 	private int sizeY;
 	private int sizeX;
-	private SController controller;
+	private SpringerControllerRecursive controller;
 	
-	public SpringerGUI(SController controller, int sizeX, int sizeY) {
+	public SpringerGUI(SpringerControllerRecursive controller, int sizeX, int sizeY) {
 		super();
 		
 		this.controller = controller;

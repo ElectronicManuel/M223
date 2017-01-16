@@ -2,24 +2,29 @@ package com.ubs.springer.controller;
 
 import java.awt.Point;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import com.ubs.springer.data.Field;
 import com.ubs.springer.data.Step;
 import com.ubs.springer.gui.InfoBox;
+import com.ubs.springer.gui.ResultBox;
 import com.ubs.springer.gui.SpringerGUI;
 
-public class SpringerControllerRecursive implements SController  {
+public class SpringerControllerRecursive implements ActionListener, ChangeListener {
 	
 	public SpringerGUI gui;
 	private InfoBox info;
 	private List<Step> steps = new ArrayList<Step>();
-	private static final int SIZE_X = 8;
-	private static final int SIZE_Y = 8;
+	private static final int SIZE_X = 5;
+	private static final int SIZE_Y = 5;
 	
 	private static final int START_X = 0;
 	private static final int START_Y = 0;
@@ -31,12 +36,15 @@ public class SpringerControllerRecursive implements SController  {
 	
 	private int stepsTotal = 0;
 	private int rollbacks = 0;
+	private int amountSolutions = 0;
 	
 	public long delay = 500;
 	
 	private boolean closed = false;
 	
 	private boolean resume = false;
+	private boolean auto = false;
+	
 	private boolean solutionFound = false;
 	
 	public static void main(String[] args) {
@@ -53,8 +61,14 @@ public class SpringerControllerRecursive implements SController  {
 		
 		// Run
 		doRound(new Step(new Point(START_X, START_Y)));
+		info.updateInfo(steps.size(), stepsTotal, rollbacks, started, ended, closed, solutionFound, amountSolutions);
+		gui.update();
 		
+		info.setVisible(false);
+		gui.setVisible(false);
 		
+		System.out.println("Ended, opening result frame");
+		new ResultBox(stepsTotal, rollbacks, amountSolutions, started, ended);
 	}
 	
 	public void doRound(Step step) {
@@ -68,9 +82,10 @@ public class SpringerControllerRecursive implements SController  {
 		gui.update();
 		stepsTotal++;
 		ended = System.nanoTime();
-		info.updateInfo(steps.size(), stepsTotal, rollbacks, started, ended, closed, solutionFound);
+		info.updateInfo(steps.size(), stepsTotal, rollbacks, started, ended, closed, solutionFound, amountSolutions);
 		
 		if(steps.size() >= SIZE_X*SIZE_Y) {
+			amountSolutions++;
 			
 			// Check if tour is closed
 			Point first = steps.get(0).getField();
@@ -84,8 +99,8 @@ public class SpringerControllerRecursive implements SController  {
 			}
 			
 			solutionFound = true;
-			info.updateInfo(steps.size(), stepsTotal, rollbacks, started, ended, closed, solutionFound);
-			while(!resume) {
+			info.updateInfo(steps.size(), stepsTotal, rollbacks, started, ended, closed, solutionFound, amountSolutions);
+			while(!resume && !auto) {
 				System.out.println("PAUSING - " + resume);
 			}
 		}
@@ -127,8 +142,14 @@ public class SpringerControllerRecursive implements SController  {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if(!resume) {
-			resume = true;
+		if(e.getSource() instanceof JButton) {
+			if(!resume) {
+				resume = true;
+			}
+		}
+		else if(e.getSource() instanceof JCheckBox) {
+			boolean checked = ((JCheckBox)e.getSource()).isSelected();
+			auto = checked;
 		}
 	}
 
@@ -137,6 +158,10 @@ public class SpringerControllerRecursive implements SController  {
 		JSlider slider = (JSlider)e.getSource();
 		int value = slider.getValue();
 		setDelay((slider.getMaximum()-value)*10);
+	}
+	
+	public void setResume(boolean resume) {
+		this.resume = resume;
 	}
 
 	public long getDelay() {
