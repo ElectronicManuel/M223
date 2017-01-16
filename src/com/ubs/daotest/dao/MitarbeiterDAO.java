@@ -14,7 +14,7 @@ public class MitarbeiterDAO {
 	public static Mitarbeiter insert(Mitarbeiter m) throws SQLException {
 		Connection con = DBConnector.getConnection();
 		String sql = "INSERT INTO Mitarbeiter (vorname, name, abteilung, email, telefon, fax, gebauede, geburtsdatum) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-		PreparedStatement pstmt = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);;
+		PreparedStatement pstmt = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 		
 		pstmt.setString(1, m.getName());
 		pstmt.setString(2, m.getVorname());

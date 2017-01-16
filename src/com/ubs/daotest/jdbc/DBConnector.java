@@ -11,15 +11,15 @@ public class DBConnector
     private String connectString = "jdbc:mysql://localhost/M223?useSSL=false";
     
     
-    private Connection openConnection()
+    public Connection openConnection(int isolationLevel)
     {
 		try
 		{
    			Class.forName( "com.mysql.jdbc.Driver" );
-   			con = DriverManager.getConnection( connectString, "root", "root" ); 
-   			
-   			con.setAutoCommit(false);
-   			return con;
+   			Connection c = DriverManager.getConnection( connectString, "root", "root" ); 
+   			c.setTransactionIsolation(isolationLevel);
+   			c.setAutoCommit(false);
+   			return c;
 		}
 		catch( Exception e)
 		{
@@ -33,10 +33,12 @@ public class DBConnector
     {
         if( con == null )
         {
-            return new DBConnector().openConnection();
+        	con = new DBConnector().openConnection(Connection.TRANSACTION_REPEATABLE_READ);
+            return con;
         }
         return con;
     }
+    
     public static void closeConnection()
     {
         try
