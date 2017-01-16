@@ -1,4 +1,4 @@
-package test;
+package test.daotest;
 
 import static org.junit.Assert.*;
 
@@ -75,7 +75,7 @@ public class MitarbeiterTest {
 	public void ftestDelete() throws SQLException {
 		System.out.println("####");
 		int dels = MitarbeiterDAO.delete(m);
-		System.out.println("Es wurden " + dels + " Mitarbeiter gelöscht");
+		System.out.println("Es wurden " + dels + " Mitarbeiter gelï¿½scht");
 		assertTrue(dels > 0);
 	}
 

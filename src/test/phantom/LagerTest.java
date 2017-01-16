@@ -1,4 +1,4 @@
-package test;
+package test.phantom;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -53,11 +53,11 @@ public class LagerTest {
 		
 		try {
 			Thread.sleep(3500);
-			System.out.println("Warte auf Löschung");
+			System.out.println("Warte auf Lï¿½schung");
 			Thread.sleep(11500);
 		} catch (InterruptedException e) {
 		}
-		System.out.println("Lösche Artikel");
+		System.out.println("Lï¿½sche Artikel");
 		Connection delCon = new DBConnector().openConnection(isolationLevel);
 		LagerDAO.delete(delCon, a1);
 		LagerDAO.delete(delCon, a2);
@@ -95,7 +95,7 @@ public class LagerTest {
 		
 	}
 	
-	// Fügt neuen Artikel ein
+	// Fï¿½gt neuen Artikel ein
 	class Transaction2 implements Runnable {
 		
 		private Artikel art;
@@ -113,14 +113,13 @@ public class LagerTest {
 					LagerDAO.insert(con, art);
 					con.commit();
 					con.close();
-					System.out.println(art.getName() + " zur Datenbank hinzugefügt");
+					System.out.println(art.getName() + " zur Datenbank hinzugefï¿½gt");
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
 			} catch (InterruptedException e) {
 			}
 		}
-		
 	}
 	
 }
