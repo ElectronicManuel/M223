@@ -9,6 +9,17 @@ import com.ubs.phantom.data.Artikel;
 
 public class LagerTest {
 	
+	public static void main(String[] args) {
+		System.out.println("#### TRANSACTION_READ_COMMITTED ####");
+		new LagerTest(Connection.TRANSACTION_READ_COMMITTED);
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+		}
+		System.out.println("#### TRANSACTION_SERIALIZABLE ####");
+		new LagerTest(Connection.TRANSACTION_SERIALIZABLE);
+	}
+	
 	private int isolationLevel;
 	
 	public LagerTest(int isolationLevel) {
@@ -112,15 +123,4 @@ public class LagerTest {
 		
 	}
 	
-	public static void main(String[] args) {
-		System.out.println("#### TRANSACTION_READ_COMMITTED ####");
-		new LagerTest(Connection.TRANSACTION_READ_COMMITTED);
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-		}
-		System.out.println("#### TRANSACTION_SERIALIZABLE ####");
-		new LagerTest(Connection.TRANSACTION_SERIALIZABLE);
-	}
-
 }
