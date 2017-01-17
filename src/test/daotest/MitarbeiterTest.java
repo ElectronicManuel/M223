@@ -75,7 +75,7 @@ public class MitarbeiterTest {
 	public void ftestDelete() throws SQLException {
 		System.out.println("####");
 		int dels = MitarbeiterDAO.delete(m);
-		System.out.println("Es wurden " + dels + " Mitarbeiter gel�scht");
+		System.out.println("Es wurden " + dels + " Mitarbeiter gelöscht");
 		assertTrue(dels > 0);
 	}
 

@@ -10,26 +10,24 @@ import com.ubs.phantom.data.Artikel;
 public class LagerTest {
 	
 	public static void main(String[] args) {
-		System.out.println("#### TRANSACTION_READ_COMMITTED ####");
-		new LagerTest(Connection.TRANSACTION_READ_COMMITTED);
+		LagerTest lt1 = new LagerTest(Connection.TRANSACTION_READ_COMMITTED);
+		LagerTest lt2 = new LagerTest(Connection.TRANSACTION_SERIALIZABLE);
+		
 		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
+			System.out.println("#### TRANSACTION_READ_COMMITTED ####");
+			lt1.test();
+			System.out.println("#### TRANSACTION_SERIALIZABLE ####");
+			lt2.test();
 		}
-		System.out.println("#### TRANSACTION_SERIALIZABLE ####");
-		new LagerTest(Connection.TRANSACTION_SERIALIZABLE);
+		catch(Exception ex) {
+			ex.printStackTrace();
+		}
 	}
 	
 	private int isolationLevel;
 	
 	public LagerTest(int isolationLevel) {
 		this.isolationLevel = isolationLevel;
-		try {
-			test();
-		}
-		catch(Exception ex) {
-			ex.printStackTrace();
-		}
 	}
 	
 	private void test() throws SQLException {
@@ -53,11 +51,11 @@ public class LagerTest {
 		
 		try {
 			Thread.sleep(3500);
-			System.out.println("Warte auf L�schung");
+			System.out.println("Warte auf Löschung");
 			Thread.sleep(11500);
 		} catch (InterruptedException e) {
 		}
-		System.out.println("L�sche Artikel");
+		System.out.println("Lösche Artikel");
 		Connection delCon = new DBConnector().openConnection(isolationLevel);
 		LagerDAO.delete(delCon, a1);
 		LagerDAO.delete(delCon, a2);
@@ -95,7 +93,7 @@ public class LagerTest {
 		
 	}
 	
-	// F�gt neuen Artikel ein
+	// Fügt neuen Artikel ein
 	class Transaction2 implements Runnable {
 		
 		private Artikel art;
@@ -113,7 +111,7 @@ public class LagerTest {
 					LagerDAO.insert(con, art);
 					con.commit();
 					con.close();
-					System.out.println(art.getName() + " zur Datenbank hinzugef�gt");
+					System.out.println(art.getName() + " zur Datenbank hinzugefügt");
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
