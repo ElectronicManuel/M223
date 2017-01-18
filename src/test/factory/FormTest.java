@@ -8,7 +8,6 @@ import java.util.Map;
 
 import javax.swing.JFrame;
 
-import com.ubs.factory.components.Validator;
 import com.ubs.factory.components.combobox.ComboSettings;
 import com.ubs.factory.components.radio.RadioSettings;
 import com.ubs.factory.components.textfield.TextSettings;
@@ -16,6 +15,7 @@ import com.ubs.factory.controller.FormFactory;
 import com.ubs.factory.controller.FormOptions;
 import com.ubs.factory.controller.InputType;
 import com.ubs.factory.gui.AutoForm;
+import com.ubs.factory.validator.Validator;
 
 @SuppressWarnings("serial")
 public class FormTest extends JFrame implements ActionListener {
@@ -48,8 +48,7 @@ public class FormTest extends JFrame implements ActionListener {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		List<FormOptions> options = new ArrayList<FormOptions>();
 		
-		TextSettings nameSettings = new TextSettings();
-		nameSettings.setMaxLength(20);
+		TextSettings nameSettings = new TextSettings(20);
 		FormOptions name = new FormOptions("name", "Name", InputType.TEXTFIELD, true, nameSettings, nameValidator);
 		options.add(name);
 		

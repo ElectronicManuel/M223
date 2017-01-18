@@ -1,6 +1,7 @@
 package com.ubs.meeting.db.mysql;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
@@ -20,7 +21,7 @@ public class MySQLAnmeldungDAO implements DBService<Anmeldung> {
 			pstmt.setString(1, a.getName());
 			pstmt.setString(2, a.getVorname());
 			pstmt.setString(3, a.getEmail());
-			pstmt.setString(4, a.getGb());
+			pstmt.setDate(4, new Date(a.getGb().getTime()));
 			pstmt.setString(5, a.getAdresse());
 			pstmt.setString(6, a.getStatus());
 			pstmt.setString(7, a.getTutorium());

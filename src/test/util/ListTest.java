@@ -39,7 +39,11 @@ public class ListTest {
 			i++;
 			System.out.println(s);
 		}
-		assertTrue(i == 5);
+		for(String s : list) {
+			i++;
+			System.out.println(s);
+		}
+		assertTrue(i == 10);
 	}
 	
 	@Test

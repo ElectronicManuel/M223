@@ -4,6 +4,7 @@ public enum InputType {
 	
 	TEXTFIELD(),
 	COMBOBOX(),
-	RADIO();
+	RADIO(),
+	DATE();
 
 }

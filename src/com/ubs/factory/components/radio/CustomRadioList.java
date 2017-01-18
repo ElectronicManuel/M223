@@ -20,7 +20,7 @@ public class CustomRadioList extends CustomComponent<JPanel> implements ItemList
 	private List<JRadioButton> buttons = new ArrayList<JRadioButton>();
 	
 	public CustomRadioList(FormOptions opts, AutoForm form) {
-		super(opts, form, opts.getValidator());
+		super(opts, form);
 		setComponent(new JPanel());
 		init();
 		
@@ -68,6 +68,15 @@ public class CustomRadioList extends CustomComponent<JPanel> implements ItemList
 	public void setColor(Color c) {
 		for(JRadioButton b : buttons) {
 			b.setForeground(c);
+		}
+	}
+
+	@Override
+	public void setValue(Object toSet) {
+		for(JRadioButton b : buttons) {
+			if(b.getText().equals(toSet.toString())) {
+				b.setSelected(true);
+			}
 		}
 	}
 	

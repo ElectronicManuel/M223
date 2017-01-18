@@ -1,7 +1,7 @@
 package com.ubs.factory.controller;
 
 import com.ubs.factory.components.CustomSettings;
-import com.ubs.factory.components.Validator;
+import com.ubs.factory.validator.Validator;
 
 public class FormOptions {
 	

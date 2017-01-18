@@ -1,239 +1,133 @@
 package com.ubs.meeting.gui;
 
-import java.awt.FlowLayout;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
-import javax.swing.ButtonGroup;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JRadioButton;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
+import com.ubs.factory.components.combobox.ComboSettings;
+import com.ubs.factory.components.date.DateSettings;
+import com.ubs.factory.components.radio.RadioSettings;
+import com.ubs.factory.components.textfield.TextSettings;
+import com.ubs.factory.controller.FormFactory;
+import com.ubs.factory.controller.FormOptions;
+import com.ubs.factory.controller.InputType;
+import com.ubs.factory.gui.AutoForm;
+import com.ubs.factory.validator.Validator;
 import com.ubs.meeting.data.Anmeldung;
-import com.ubs.meeting.data.Tutorium;
 import com.ubs.meeting.db.DBService;
 import com.ubs.meeting.db.DBServiceHandler;
 
+@SuppressWarnings("serial")
 public class LoginFrame extends JFrame implements ActionListener {
 
-	private static final long serialVersionUID = -7958962931130119705L;
-	
-	private JLabel name, vorname, email, geburtsdatum, adresse, status, tutorium, bemerkung;
-	private JTextField nameIn, vornameIn, emailIn, geburtsdatumIn;
-	private JTextArea adresseIn, bemerkungIn;
-	private JRadioButton mitglied, student, nonM;
-	private ButtonGroup statusG;
-	private JPanel statusButtons;
-	private JComboBox<Tutorium> tutoriumIn;
-	
-	private JButton submit;
-	
-	private Tutorium[] tutorien = {
-			new Tutorium("Verschlüsselung"),
-			new Tutorium("Linguistik"),
-			new Tutorium("Java vs C#")
-	};
+	private AutoForm auto;
 	
 	public LoginFrame() {
-		try {
-			init();
-		} catch(Exception ex) {}
+		init();
 	}
 	
-	private void init() throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
+	private void init() {
 		// Allgemeines
-		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
+				| UnsupportedLookAndFeelException e) {
+			e.printStackTrace();
+		}
 		setTitle("Anmeldung Tutorium");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
-		// Komponenten initialisieren
+		// Formular initialisieren
+		List<FormOptions> fields = new ArrayList<FormOptions>();
 		
-		// JLabels
-		name = new JLabel("Name");
-		vorname = new JLabel("Vorname");
-		email = new JLabel("Email");
-		geburtsdatum = new JLabel("Geburtsdatum");
-		adresse = new JLabel("Adresse");
-		status = new JLabel("Status");
-		tutorium = new JLabel("Tutorium");
-		bemerkung = new JLabel("Bemerkung");
+		// Settings definieren
+		TextSettings text = new TextSettings(20);
 		
-		// JTextFields
-		nameIn = new JTextField(20);
-		vornameIn = new JTextField(20);
-		emailIn = new JTextField(20);
-		geburtsdatumIn = new JTextField(20);
+		DateSettings date = new DateSettings();
 		
-		// JTextAreas
-		adresseIn = new JTextArea(3, 20);
-		bemerkungIn = new JTextArea(3, 20);
+		ComboSettings combo = new ComboSettings();
+		combo.setObjects(new String[]{"Java", "SQL", "C#"});
 		
-		// JRadioButtons
-		statusG = new ButtonGroup();
-		mitglied = new JRadioButton("Mitglied");
-		student = new JRadioButton("Student");
-		nonM = new JRadioButton("Nicht Mitglied");
-		statusG.add(mitglied);
-		statusG.add(student);
-		statusG.add(nonM);
+		RadioSettings radio = new RadioSettings();
+		radio.setObjects(new String[]{"Student", "Mitglied", "Nicht Mitglied"});
 		
-		statusButtons = new JPanel(new FlowLayout());
-		statusButtons.add(mitglied);
-		statusButtons.add(student);
-		statusButtons.add(nonM);
-		
-		// JComboBox
-		tutoriumIn = new JComboBox<Tutorium>(tutorien);
-		
-		// JButtons
-		submit = new JButton("Bestätigen");
-		submit.addActionListener(this);
-		
-		// Layout
-		setLayout(new GridBagLayout());
-		GridBagConstraints c = new GridBagConstraints();
-		c.insets = new Insets(5, 5, 5, 5);
-		
-		int i = 0;
+		// Felder definieren
 		
 		// Name
-		c.gridx = 0; c.gridy = i;
-		add(name, c);
-		c.gridx = 1;
-		add(nameIn, c);
-		i++;
+		fields.add(new FormOptions("name", "Name", InputType.TEXTFIELD, true, text, Validator.LETTERS_SPACES_ONLY));
 		
 		// Vorname
-		c.gridx = 0; c.gridy = i;
-		add(vorname, c);
-		c.gridx = 1;
-		add(vornameIn, c);
-		i++;
+		fields.add(new FormOptions("vorname", "Vorname", InputType.TEXTFIELD, true, text, Validator.LETTERS_SPACES_ONLY));
 		
 		// Email
-		c.gridx = 0; c.gridy = i;
-		add(email, c);
-		c.gridx = 1;
-		add(emailIn, c);
-		i++;
+		fields.add(new FormOptions("email", "Email", InputType.TEXTFIELD, true, text, Validator.EMAIL));
 		
 		// Geburtsdatum
-		c.gridx = 0; c.gridy = i;
-		add(geburtsdatum, c);
-		c.gridx = 1;
-		add(geburtsdatumIn, c);
-		i++;
+		fields.add(new FormOptions("gb", "Geburtsdatum", InputType.DATE, false, date, null));
 		
 		// Adresse
-		c.gridx = 0; c.gridy = i;
-		add(adresse, c);
-		c.gridx = 1;
-		add(new JScrollPane(adresseIn), c);
-		i++;
+		fields.add(new FormOptions("adresse", "Adresse", InputType.TEXTFIELD, false, text, null));
 		
 		// Status
-		c.gridx = 0; c.gridy = i;
-		add(status, c);
-		c.gridx = 1;
-		add(statusButtons, c);
-		i++;
+		fields.add(new FormOptions("status", "Status", InputType.RADIO, true, radio, null));
 		
 		// Tutorium
-		c.gridx = 0; c.gridy = i;
-		add(tutorium, c);
-		c.gridx = 1;
-		add(tutoriumIn, c);
-		i++;
+		fields.add(new FormOptions("tutorium", "Tutorium", InputType.COMBOBOX, true, combo, null));
 		
 		// Bemerkung
-		c.gridx = 0; c.gridy = i;
-		add(bemerkung, c);
-		c.gridx = 1;
-		add(new JScrollPane(bemerkungIn), c);
-		i++;
+		fields.add(new FormOptions("bemerkung", "Bemerkung", InputType.TEXTFIELD, false, text, null));
 		
-		// Bemerkung
-		c.gridx = 0; c.gridy = i;
-		add(submit, c);
-		i++;
+		auto = FormFactory.produceForm(fields, "Anmeldung Tutorium", this);
+		
+		add(auto);
 		
 		pack();
-		setSize(getWidth() + 20, getHeight() + 20);
+		setSize(getWidth() + 10, getHeight() + 10);
 		setLocationRelativeTo(null);
 		setVisible(true);
-	}
-	
-	// Leert die Inputfelder
-	private void clearInputs() {
-		nameIn.setText("");
-		vornameIn.setText("");
-		emailIn.setText("");
-		geburtsdatumIn.setText("");
-		adresseIn.setText("");
-		bemerkungIn.setText("");
-		/*mitglied.setSelected(false);
-		student.setSelected(false);
-		nonM.setSelected(false);*/
-		statusG.clearSelection();
-		tutoriumIn.setSelectedIndex(0);
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if(e.getSource() == submit) {
-			// Neues Anmeldungsobjekt initialisieren
-			Anmeldung a = new Anmeldung();
-			
-			// Mit Werten aus dem GUI befüllen
-			a.setName(nameIn.getText());
-			a.setVorname(vornameIn.getText());
-			a.setEmail(emailIn.getText());
-			a.setGb(geburtsdatumIn.getText());
-			a.setAdresse(adresseIn.getText());
-			
-			// JRadioButtons
-			String status = "N/A";
-			if(mitglied.isSelected()) {
-				status = mitglied.getText();
-			}
-			if(nonM.isSelected()) {
-				status = nonM.getText();
-			}
-			if(student.isSelected()) {
-				status = student.getText();
-			}
-			a.setStatus(status);
-			
-			a.setTutorium(tutoriumIn.getSelectedItem().toString());
-			a.setBemerkung(bemerkungIn.getText());
-			
-			clearInputs();
-			
-			// DAO holen
-			DBService<Anmeldung> service = (DBService<Anmeldung>) DBServiceHandler.getDBService();
-			if(service.insert(a) > 0) {
-				// Erfolgsdialog
-				JOptionPane.showMessageDialog(this, "Anmeldung erfolgreich", "Erfolgreich", JOptionPane.INFORMATION_MESSAGE);
-			}
-			else {
-				// Fehlerdialog
-				JOptionPane.showMessageDialog(this, "Anmeldung fehlgeschlagen", "Fehlgeschlagen", JOptionPane.ERROR_MESSAGE);
-			}
-			
+		// Neues Anmeldungsobjekt initialisieren
+		Anmeldung a = new Anmeldung();
+		
+		Map<String, Object> values = auto.getValues();
+
+		// Mit Werten aus dem GUI befüllen
+		a.setName((String) values.get("name"));
+		a.setVorname((String) values.get("vorname"));
+		a.setEmail((String) values.get("email"));
+		a.setGb((Date) values.get("gb"));
+		a.setAdresse((String) values.get("adresse"));
+		a.setStatus((String) values.get("status"));
+		a.setTutorium((String) values.get("tutorium"));
+		a.setBemerkung((String) values.get("bemerkung"));
+
+		// GUI Leeren
+		auto.clear();
+
+		// DAO holen
+		DBService<Anmeldung> service = (DBService<Anmeldung>) DBServiceHandler.getDBService();
+		if (service.insert(a) > 0) {
+			// Erfolgsdialog
+			JOptionPane.showMessageDialog(this, "Anmeldung erfolgreich", "Erfolgreich",
+					JOptionPane.INFORMATION_MESSAGE);
+		} else {
+			// Fehlerdialog
+			JOptionPane.showMessageDialog(this, "Anmeldung fehlgeschlagen", "Fehlgeschlagen",
+					JOptionPane.ERROR_MESSAGE);
 		}
+
 	}
 
 }

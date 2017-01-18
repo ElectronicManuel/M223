@@ -5,6 +5,10 @@ import com.ubs.factory.components.CustomSettings;
 public class TextSettings extends CustomSettings {
 	
 	private int maxLength;
+	
+	public TextSettings(int maxLength) {
+		setMaxLength(maxLength);
+	}
 
 	public int getMaxLength() {
 		return maxLength;

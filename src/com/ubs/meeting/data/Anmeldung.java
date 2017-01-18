@@ -1,11 +1,13 @@
 package com.ubs.meeting.data;
 
+import java.util.Date;
+
 public class Anmeldung {
 	
 	private String name;
 	private String vorname;
 	private String email;
-	private String gb;
+	private Date gb;
 	private String adresse;
 	private String status;
 	private String tutorium;
@@ -30,10 +32,10 @@ public class Anmeldung {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public String getGb() {
+	public Date getGb() {
 		return gb;
 	}
-	public void setGb(String gb) {
+	public void setGb(Date gb) {
 		this.gb = gb;
 	}
 	public String getAdresse() {

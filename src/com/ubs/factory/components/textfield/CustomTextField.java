@@ -11,7 +11,7 @@ import com.ubs.factory.gui.AutoForm;
 public class CustomTextField extends CustomComponent<JTextField> implements DocumentListener {
 	
 	public CustomTextField(FormOptions opts, AutoForm form) {
-		super(opts, form, opts.getValidator());
+		super(opts, form);
 		
 		setComponent(new JTextField(((TextSettings)getOptions().getSettings()).getMaxLength()));
 		getComponent().getDocument().addDocumentListener(this);
@@ -47,6 +47,12 @@ public class CustomTextField extends CustomComponent<JTextField> implements Docu
 	@Override
 	public void removeUpdate(DocumentEvent arg0) {
 		verify();
+	}
+
+	@Override
+	public void setValue(Object toSet) {
+		String s = (String) toSet;
+		getComponent().setText(s);
 	}
 
 }

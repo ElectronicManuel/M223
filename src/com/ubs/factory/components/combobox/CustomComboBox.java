@@ -16,7 +16,7 @@ public class CustomComboBox extends CustomComponent<JComboBox> implements ItemLi
 	
 	@SuppressWarnings("unchecked")
 	public CustomComboBox(FormOptions opts, AutoForm form) {
-		super(opts, form, opts.getValidator());
+		super(opts, form);
 		
 		ArrayList<Object> list = new ArrayList<Object>();
 		list.add("Bitte auswählen");
@@ -56,6 +56,11 @@ public class CustomComboBox extends CustomComponent<JComboBox> implements ItemLi
 	@Override
 	public void setColor(Color c) {
 		getComponent().setForeground(c);
+	}
+
+	@Override
+	public void setValue(Object toSet) {
+		getComponent().setSelectedItem(toSet);
 	}
 
 }

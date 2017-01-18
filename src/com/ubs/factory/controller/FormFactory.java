@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.ubs.factory.components.CustomComponent;
 import com.ubs.factory.components.combobox.CustomComboBox;
+import com.ubs.factory.components.date.CustomDate;
 import com.ubs.factory.components.radio.CustomRadioList;
 import com.ubs.factory.components.textfield.CustomTextField;
 import com.ubs.factory.gui.AutoForm;
@@ -26,6 +27,9 @@ public class FormFactory {
 		}
 		else if(options.getType() == InputType.RADIO) {
 			return new CustomRadioList(options, form);
+		}
+		else if(options.getType() == InputType.DATE) {
+			return new CustomDate(options, form);
 		}
 		return null;
 	}

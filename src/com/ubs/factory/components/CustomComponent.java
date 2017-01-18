@@ -7,6 +7,7 @@ import javax.swing.JComponent;
 import com.ubs.factory.Design;
 import com.ubs.factory.controller.FormOptions;
 import com.ubs.factory.gui.AutoForm;
+import com.ubs.factory.validator.Validator;
 
 public abstract class CustomComponent<T extends JComponent> {
 	
@@ -17,15 +18,16 @@ public abstract class CustomComponent<T extends JComponent> {
 	protected Validator validator;
 	protected boolean valid;
 	
-	public CustomComponent(FormOptions options, AutoForm form, Validator validator) {
+	public CustomComponent(FormOptions options, AutoForm form) {
 		this.options = options;
 		this.form = form;
-		this.validator = validator;
+		this.validator = options.getValidator();
 	}
 	
 	// Methods to implement
 	public abstract boolean isNull();
 	public abstract Object getValue();
+	public abstract void setValue(Object toSet);
 	public abstract void clear();
 	
 	// Implemented Methods
@@ -36,16 +38,21 @@ public abstract class CustomComponent<T extends JComponent> {
 	
 	public void verify() {
 		boolean oldValid = valid;
-		if(validator != null) {
-			if(validator.validate(getValue())) {
-				valid = true;
+		if(isValidType()) {
+			if(validator != null) {
+				if(validator.validate(getValue())) {
+					valid = true;
+				}
+				else {
+					valid = false;
+				}
 			}
 			else {
-				valid = false;
+				valid = true;
 			}
 		}
 		else {
-			valid = true;
+			valid = false;
 		}
 			
 		if(isNull() && !getOptions().isRequired()) {
@@ -57,12 +64,6 @@ public abstract class CustomComponent<T extends JComponent> {
 		
 		Color toSet = valid ? Design.getOkColor() : Design.getErrorColor();
 		setColor(toSet);
-		/*if(getComponent() instanceof JComboBox || getComponent() instanceof JPanel) {
-			getComponent().setForeground(toSet);
-		}
-		else {
-			getComponent().setBackground(toSet);
-		}*/
 		
 		if(oldValid != valid) {
 			form.valueChanged();
@@ -70,6 +71,11 @@ public abstract class CustomComponent<T extends JComponent> {
 	}
 	
 	// Getter / Setter
+	
+	public boolean isValidType() {
+		return true;
+	}
+	
 	public T getComponent() {
 		return component;
 	}

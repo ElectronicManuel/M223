@@ -12,7 +12,6 @@ import javax.swing.JScrollPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-import com.ubs.factory.components.Validator;
 import com.ubs.factory.components.combobox.ComboSettings;
 import com.ubs.factory.components.radio.RadioSettings;
 import com.ubs.factory.components.textfield.TextSettings;
@@ -20,6 +19,8 @@ import com.ubs.factory.controller.FormFactory;
 import com.ubs.factory.controller.FormOptions;
 import com.ubs.factory.controller.InputType;
 import com.ubs.factory.gui.AutoForm;
+import com.ubs.factory.validator.Validator;
+import com.ubs.factory.validator.LettersSpacesOnly;
 
 @SuppressWarnings("serial")
 public class LargeGUI extends JFrame implements ActionListener {
@@ -46,12 +47,11 @@ public class LargeGUI extends JFrame implements ActionListener {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
 		// Formular initialisieren
-		Validator val = new NameValidator();
+		Validator val = new LettersSpacesOnly();
 		List<FormOptions> fields = new ArrayList<FormOptions>();
 		
 		// Settings definieren
-		TextSettings text = new TextSettings();
-		text.setMaxLength(20);
+		TextSettings text = new TextSettings(20);
 		
 		ComboSettings combo = new ComboSettings();
 		
@@ -59,23 +59,23 @@ public class LargeGUI extends JFrame implements ActionListener {
 		
 		// Felder definieren
 		
-		for(int i = 1; i <= 20; i++) {
-			fields.add(new FormOptions("text" + i, "Text " + i, InputType.TEXTFIELD, true, text, val));
+		for(int i = 1; i <= 100; i++) {
+			fields.add(new FormOptions("text" + i, "Text " + i, InputType.TEXTFIELD, false, text, val));
 		}
 		
-		for(int i = 1; i <= 5; i++) {
+		for(int i = 1; i <= 100; i++) {
 			radio.setObjects(getStrings());
-			fields.add(new FormOptions("radio" + i, "Radio " + i, InputType.RADIO, true, radio, null));
+			fields.add(new FormOptions("radio" + i, "Radio " + i, InputType.RADIO, false, radio, null));
 		}
 		
-		for(int i = 1; i <= 2; i++) {
+		for(int i = 1; i <= 100; i++) {
 			combo.setObjects(getStrings());
-			fields.add(new FormOptions("comboRequired" + i, "Combo " + i, InputType.COMBOBOX, true, combo, null));
+			fields.add(new FormOptions("comboRequired" + i, "Combo " + i, InputType.COMBOBOX, false, combo, null));
 		}
 		
 		for(int i = 1; i <= 5; i++) {
 			combo.setObjects(getStrings());
-			fields.add(new FormOptions("combo" + i, "Combo " + i, InputType.COMBOBOX, false, combo, null));
+			fields.add(new FormOptions("combo" + i, "Combo " + i, InputType.COMBOBOX, true, combo, null));
 		}
 		
 		auto = FormFactory.produceForm(fields, "Grosses GUI", this);

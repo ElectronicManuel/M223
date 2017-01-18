@@ -134,12 +134,17 @@ public class Nguyen<T> implements Iterable<T>, Iterator<T> {
 
 	@Override
 	public boolean hasNext() {
+		boolean toReturn = false;
 		if(current != null) {
-    		return current.hasNext();
+    		toReturn = current.hasNext();
     	}
     	else {
-    		return true;
+    		toReturn = true;
     	}
+		if(toReturn == false) {
+			current = null;
+		}
+		return toReturn;
 	}
 
 	@Override
