@@ -19,7 +19,7 @@ import com.ubs.factory.components.CustomComponent;
 import com.ubs.factory.controller.FormFactory;
 import com.ubs.factory.controller.FormOptions;
 
-@SuppressWarnings("serial")
+@SuppressWarnings({ "rawtypes", "serial" })
 public class AutoForm extends JPanel {
 	
 	private String title;
@@ -70,7 +70,7 @@ public class AutoForm extends JPanel {
 			c.gridx = 0;
 		
 			// Adding label
-			add(new JLabel(options.getDisplayName()), c);
+			add(new JLabel(options.getDisplayName() + (options.isRequired() ? " *" : "")), c);
 			
 			// Moving +1 @ x
 			c.gridx = 1;
@@ -103,7 +103,6 @@ public class AutoForm extends JPanel {
 	}
 	
 	public void valueChanged() {
-		System.out.println("Value Changed");
 		try {
 			submit.setEnabled(isValid());
 		}

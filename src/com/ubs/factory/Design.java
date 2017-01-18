@@ -9,7 +9,7 @@ public class Design {
 	}
 	
 	public static Color getOkColor() {
-		return Color.white;
+		return null;
 	}
 	
 	public static int getTitleSize() {
