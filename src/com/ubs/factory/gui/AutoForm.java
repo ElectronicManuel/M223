@@ -1,27 +1,38 @@
 package com.ubs.factory.gui;
 
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionListener;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
-import javax.swing.JComponent;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
 import javax.swing.UIManager;
 
+import com.ubs.factory.Design;
+import com.ubs.factory.components.CustomComponent;
+import com.ubs.factory.controller.FormFactory;
+import com.ubs.factory.controller.FormOptions;
+
+@SuppressWarnings("serial")
 public class AutoForm extends JPanel {
 	
-	private static final long serialVersionUID = -3062620578246256524L;
+	private String title;
 	
-	private Map<String, InputType> fields;
-	private Map<String, JComponent> components = new LinkedHashMap<String, JComponent>();
+	private List<FormOptions> fields;
+	private Map<String, CustomComponent> components = new LinkedHashMap<String, CustomComponent>();
+	private ActionListener submitListener;
+	private JButton submit;
 	
-	public AutoForm(Map<String, InputType> fields) {
+	public AutoForm(List<FormOptions> fields, String title, ActionListener submitListener) {
 		this.fields = fields;
+		this.title = title;
+		this.submitListener = submitListener;
 		init();
 	}
 	
@@ -39,44 +50,85 @@ public class AutoForm extends JPanel {
 		
 		// Components
 		int i = 0;
-		for(String key : fields.keySet()) {
-			// Getting type
-			InputType type = fields.get(key);
-			
+		
+		c.gridy = i;
+		c.gridx = 0;
+		
+		c.gridwidth = 2;
+		
+		JLabel titleLabel = new JLabel(title);
+		Font f = new Font("", Font.BOLD, Design.getTitleSize());
+		titleLabel.setFont(f);
+		add(titleLabel, c);
+		
+		c.gridwidth = 1;
+		
+		i++;
+		for(FormOptions options : fields) {
 			// Setting position
 			c.gridy = i;
 			c.gridx = 0;
 		
 			// Adding label
-			add(new JLabel(key), c);
+			add(new JLabel(options.getDisplayName()), c);
 			
 			// Moving +1 @ x
 			c.gridx = 1;
 			
-			// Call the corresponding add method
-			if(type == InputType.TEXTFIELD) {
-				addTextField(c, key);
-			}
-			else if(type == InputType.TEXTAREA) {
-				addTextArea(c, key);
-			}
-			else if(type == InputType.)
+			// Add the corresponding custom component
+			CustomComponent comp = FormFactory.getComponent(options, this);
+			components.put(options.getKey(), comp);
+			add(comp.getComponent(), c);
+			
 			i++;
+		}
+		
+		// Submit button
+		submit = new JButton("Bestätigen");
+		submit.setEnabled(isValid());
+		if(submitListener != null) {
+			submit.addActionListener(submitListener);
+		}
+		
+		c.gridy = i;
+		c.gridx = 0;
+		
+		add(submit, c);
+	}
+	
+	public void clear() {
+		for(CustomComponent cc : components.values()) {
+			cc.clear();
 		}
 	}
 	
-	private void addTextField(GridBagConstraints c, String key) {
-		JTextField field = new JTextField(20);
-		components.put(key, field);
-		add(field, c);
+	public void valueChanged() {
+		System.out.println("Value Changed");
+		try {
+			submit.setEnabled(isValid());
+		}
+		catch(NullPointerException ex) {}
 	}
 	
-	private void addTextArea(GridBagConstraints c, String key) {
-		JTextArea area = new JTextArea(3, 20);
-		components.put(key, area);
-		add(area, c);
+	public boolean isValid() {
+		boolean valid = true;
+		if(components != null) {
+			for(String k : components.keySet()) {
+				CustomComponent cc = components.get(k);
+				if(!cc.isValid()) {
+					valid = false;
+				}
+			}
+		}
+		return valid;
 	}
 	
+	public Map<String, Object> getValues() {
+		Map<String, Object> values = new LinkedHashMap<String, Object>();
+		for(String k : components.keySet()) {
+			values.put(k, components.get(k).getValue());
+		}
+		return values;
+	}
 	
-
 }

@@ -11,6 +11,7 @@ import com.ubs.meeting.db.DBService;
 public class MySQLAnmeldungDAO implements DBService<Anmeldung> {
 
 	public int insert(Anmeldung a) {
+		int toReturn = 0;
 		Connection con = DBConnector.getConnection();
 		try {
 			PreparedStatement pstmt = con.prepareStatement("INSERT INTO anmeldungen (A_Name, A_Vorname, A_Email, A_GB, A_Adresse, A_Status, A_Tutorium, A_Bemerkung) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
@@ -25,8 +26,9 @@ public class MySQLAnmeldungDAO implements DBService<Anmeldung> {
 			pstmt.setString(7, a.getTutorium());
 			pstmt.setString(8, a.getBemerkung());
 			
-			pstmt.executeUpdate();
+			toReturn = pstmt.executeUpdate();
 			con.commit();
+			pstmt.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 			try {
@@ -38,7 +40,7 @@ public class MySQLAnmeldungDAO implements DBService<Anmeldung> {
 		
 		DBConnector.closeConnection();
 		
-		return 0;
+		return toReturn;
 	}
 
 	public int delete(Anmeldung toDelete) {

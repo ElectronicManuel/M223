@@ -12,6 +12,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
@@ -223,10 +224,15 @@ public class LoginFrame extends JFrame implements ActionListener {
 			
 			// DAO holen
 			DBService<Anmeldung> service = (DBService<Anmeldung>) DBServiceHandler.getDBService();
-			service.insert(a);
+			if(service.insert(a) > 0) {
+				// Erfolgsdialog
+				JOptionPane.showMessageDialog(this, "Anmeldung erfolgreich", "Erfolgreich", JOptionPane.INFORMATION_MESSAGE);
+			}
+			else {
+				// Fehlerdialog
+				JOptionPane.showMessageDialog(this, "Anmeldung fehlgeschlagen", "Fehlgeschlagen", JOptionPane.ERROR_MESSAGE);
+			}
 			
-			// BestätigunsDialog
-			new Confirmation("Deine Eingabe wurde gespeichert", true);
 		}
 	}
 
