@@ -1,5 +1,6 @@
 package com.ubs.factory.components.radio;
 
+import java.awt.Color;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.ArrayList;
@@ -62,5 +63,12 @@ public class CustomRadioList extends CustomComponent<JPanel> implements ItemList
 		boolean nil = getValue() == null;
 		return nil;
 	}
-
+	
+	@Override
+	public void setColor(Color c) {
+		for(JRadioButton b : buttons) {
+			b.setForeground(c);
+		}
+	}
+	
 }

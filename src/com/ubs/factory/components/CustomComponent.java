@@ -1,5 +1,7 @@
 package com.ubs.factory.components;
 
+import java.awt.Color;
+
 import javax.swing.JComponent;
 
 import com.ubs.factory.Design;
@@ -28,6 +30,10 @@ public abstract class CustomComponent<T extends JComponent> {
 	
 	// Implemented Methods
 	
+	public void setColor(Color c) {
+		getComponent().setBackground(c);
+	}
+	
 	public void verify() {
 		boolean oldValid = valid;
 		if(validator != null) {
@@ -49,7 +55,15 @@ public abstract class CustomComponent<T extends JComponent> {
 			valid = false;
 		}
 		
-		getComponent().setBackground(valid ? Design.getOkColor() : Design.getErrorColor());
+		Color toSet = valid ? Design.getOkColor() : Design.getErrorColor();
+		setColor(toSet);
+		/*if(getComponent() instanceof JComboBox || getComponent() instanceof JPanel) {
+			getComponent().setForeground(toSet);
+		}
+		else {
+			getComponent().setBackground(toSet);
+		}*/
+		
 		if(oldValid != valid) {
 			form.valueChanged();
 		}

@@ -1,5 +1,6 @@
 package com.ubs.factory.components.combobox;
 
+import java.awt.Color;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.ArrayList;
@@ -50,6 +51,11 @@ public class CustomComboBox extends CustomComponent<JComboBox> implements ItemLi
 	@Override
 	public void itemStateChanged(ItemEvent e) {
 		verify();
+	}
+	
+	@Override
+	public void setColor(Color c) {
+		getComponent().setForeground(c);
 	}
 
 }

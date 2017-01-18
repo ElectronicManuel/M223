@@ -26,8 +26,11 @@ public class LargeGUI extends JFrame implements ActionListener {
 	
 	private AutoForm auto;
 	
+	public static void main(String[] args) {
+		new LargeGUI();
+	}
+	
 	public LargeGUI() {
-		
 		init();
 	}
 	
@@ -56,18 +59,23 @@ public class LargeGUI extends JFrame implements ActionListener {
 		
 		// Felder definieren
 		
-		for(int i = 1; i <= 2; i++) {
+		for(int i = 1; i <= 20; i++) {
 			fields.add(new FormOptions("text" + i, "Text " + i, InputType.TEXTFIELD, true, text, val));
 		}
 		
-		for(int i = 1; i <= 2; i++) {
+		for(int i = 1; i <= 5; i++) {
 			radio.setObjects(getStrings());
 			fields.add(new FormOptions("radio" + i, "Radio " + i, InputType.RADIO, true, radio, null));
 		}
 		
 		for(int i = 1; i <= 2; i++) {
 			combo.setObjects(getStrings());
-			fields.add(new FormOptions("combo" + i, "Combo " + i, InputType.COMBOBOX, true, combo, null));
+			fields.add(new FormOptions("comboRequired" + i, "Combo " + i, InputType.COMBOBOX, true, combo, null));
+		}
+		
+		for(int i = 1; i <= 5; i++) {
+			combo.setObjects(getStrings());
+			fields.add(new FormOptions("combo" + i, "Combo " + i, InputType.COMBOBOX, false, combo, null));
 		}
 		
 		auto = FormFactory.produceForm(fields, "Grosses GUI", this);
