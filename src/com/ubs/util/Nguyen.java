@@ -64,12 +64,7 @@ public class Nguyen<T> implements Iterable<T> {
 				return false;
 			}
 		}
-		if(pointer != null) {
-			return remove(pointer);
-		}
-		else {
-			return false;
-		}
+		return remove(pointer);
 	}
 	
 	public boolean remove(T value) {
