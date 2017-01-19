@@ -71,7 +71,7 @@ public class LoginFrame extends JFrame implements ActionListener {
 		fields.add(new FormOptions("email", "Email", InputType.TEXTFIELD, true, text, Validator.EMAIL));
 		
 		// Geburtsdatum
-		fields.add(new FormOptions("gb", "Geburtsdatum", InputType.DATE, false, date, null));
+		fields.add(new FormOptions("gb", "Geburtsdatum", InputType.DATE, false, date, Validator.BIRTHDATE));
 		
 		// Adresse
 		fields.add(new FormOptions("adresse", "Adresse", InputType.TEXTFIELD, false, text, null));
@@ -102,6 +102,9 @@ public class LoginFrame extends JFrame implements ActionListener {
 		Anmeldung a = new Anmeldung();
 		
 		Map<String, Object> values = auto.getValues();
+		
+		// GUI Leeren
+		auto.clear();
 
 		// Mit Werten aus dem GUI befüllen
 		a.setName((String) values.get("name"));
@@ -112,9 +115,6 @@ public class LoginFrame extends JFrame implements ActionListener {
 		a.setStatus((String) values.get("status"));
 		a.setTutorium((String) values.get("tutorium"));
 		a.setBemerkung((String) values.get("bemerkung"));
-
-		// GUI Leeren
-		auto.clear();
 
 		// DAO holen
 		DBService<Anmeldung> service = (DBService<Anmeldung>) DBServiceHandler.getDBService();

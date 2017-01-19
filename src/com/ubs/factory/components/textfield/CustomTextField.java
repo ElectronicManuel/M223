@@ -50,9 +50,10 @@ public class CustomTextField extends CustomComponent<JTextField> implements Docu
 	}
 
 	@Override
-	public void setValue(Object toSet) {
+	public boolean setValue(Object toSet) {
 		String s = (String) toSet;
 		getComponent().setText(s);
+		return true;
 	}
 
 }

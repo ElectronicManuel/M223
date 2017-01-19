@@ -96,12 +96,6 @@ public class AutoForm extends JPanel {
 		add(submit, c);
 	}
 	
-	public void clear() {
-		for(CustomComponent cc : components.values()) {
-			cc.clear();
-		}
-	}
-	
 	public void valueChanged() {
 		try {
 			submit.setEnabled(isValid());
@@ -122,12 +116,36 @@ public class AutoForm extends JPanel {
 		return valid;
 	}
 	
+	public Object getValue(String key) {
+		if(components.containsKey(key)) {
+			return components.get(key).getValue();
+		}
+		return null;
+	}
+	
 	public Map<String, Object> getValues() {
 		Map<String, Object> values = new LinkedHashMap<String, Object>();
 		for(String k : components.keySet()) {
 			values.put(k, components.get(k).getValue());
 		}
 		return values;
+	}
+	
+	public boolean setValue(String key, Object value) {
+		if(components.containsKey(key)) {
+			CustomComponent cc = components.get(key);
+			cc.setValue(value);
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	
+	public void clear() {
+		for(CustomComponent cc : components.values()) {
+			cc.clear();
+		}
 	}
 	
 }

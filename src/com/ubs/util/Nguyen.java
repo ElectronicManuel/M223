@@ -2,10 +2,9 @@ package com.ubs.util;
 
 import java.util.Iterator;
 
-public class Nguyen<T> implements Iterable<T>, Iterator<T> {
+public class Nguyen<T> implements Iterable<T> {
 	
 	private Khanh<T> root;
-	private Khanh<T> current;
 	
 	public void add(T value) {
 		Khanh<T> toAdd = new Khanh<T>(value);
@@ -129,35 +128,38 @@ public class Nguyen<T> implements Iterable<T>, Iterator<T> {
 
 	@Override
 	public Iterator<T> iterator() {
-		return this;
-	}
+		return new Iterator<T>() {
+			
+			private Khanh<T> current;
 
-	@Override
-	public boolean hasNext() {
-		boolean toReturn = false;
-		if(current != null) {
-    		toReturn = current.hasNext();
-    	}
-    	else {
-    		toReturn = true;
-    	}
-		if(toReturn == false) {
-			current = null;
-		}
-		return toReturn;
-	}
+			@Override
+			public boolean hasNext() {
+				boolean toReturn = false;
+				if(current != null) {
+		    		toReturn = current.hasNext();
+		    	}
+		    	else {
+		    		toReturn = true;
+		    	}
+				if(toReturn == false) {
+					current = null;
+				}
+				return toReturn;
+			}
 
-	@Override
-	public T next() {
-        if(current != null) {
-        	current = current.next();
-        	return current.getValue();
-        }
-        if(root != null) {
-        	current = root;
-        	return current.getValue();
-        }
-        return null;
+			@Override
+			public T next() {
+		        if(current != null) {
+		        	current = current.next();
+		        	return current.getValue();
+		        }
+		        if(root != null) {
+		        	current = root;
+		        	return current.getValue();
+		        }
+		        return null;
+			}
+		};
 	}
 	
 }

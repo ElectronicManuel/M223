@@ -72,12 +72,14 @@ public class CustomRadioList extends CustomComponent<JPanel> implements ItemList
 	}
 
 	@Override
-	public void setValue(Object toSet) {
+	public boolean setValue(Object toSet) {
 		for(JRadioButton b : buttons) {
 			if(b.getText().equals(toSet.toString())) {
 				b.setSelected(true);
+				return true;
 			}
 		}
+		return false;
 	}
 	
 }

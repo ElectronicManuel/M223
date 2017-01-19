@@ -59,8 +59,9 @@ public class CustomComboBox extends CustomComponent<JComboBox> implements ItemLi
 	}
 
 	@Override
-	public void setValue(Object toSet) {
+	public boolean setValue(Object toSet) {
 		getComponent().setSelectedItem(toSet);
+		return true;
 	}
 
 }

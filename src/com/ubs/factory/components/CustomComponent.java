@@ -27,7 +27,7 @@ public abstract class CustomComponent<T extends JComponent> {
 	// Methods to implement
 	public abstract boolean isNull();
 	public abstract Object getValue();
-	public abstract void setValue(Object toSet);
+	public abstract boolean setValue(Object toSet);
 	public abstract void clear();
 	
 	// Implemented Methods

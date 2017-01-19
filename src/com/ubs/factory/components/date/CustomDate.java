@@ -58,10 +58,14 @@ public class CustomDate extends CustomComponent<JTextField> implements DocumentL
 	}
 
 	@Override
-	public void setValue(Object toSet) {
+	public boolean setValue(Object toSet) {
 		if(toSet instanceof Date) {
 			Date d = (Date)toSet;
 			getComponent().setText(format.format(d));
+			return true;
+		}
+		else {
+			return false;
 		}
 	}
 
