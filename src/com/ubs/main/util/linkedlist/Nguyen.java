@@ -1,4 +1,4 @@
-package com.ubs.main.util;
+package com.ubs.main.util.linkedlist;
 
 import java.util.Iterator;
 

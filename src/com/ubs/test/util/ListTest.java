@@ -7,7 +7,7 @@ import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
-import com.ubs.main.util.Nguyen;
+import com.ubs.main.util.linkedlist.Nguyen;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class ListTest {
