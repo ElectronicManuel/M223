@@ -40,7 +40,7 @@ public class Tree<T extends Comparable<T>> {
 						break;
 					}
 				}
-				if(val.compareTo(current.getData()) < 0) {
+				else if(val.compareTo(current.getData()) < 0) {
 					// Links
 					if(current.hasLeft()) {
 						current = current.getLeft();
@@ -52,11 +52,6 @@ public class Tree<T extends Comparable<T>> {
 				}
 			}
 		}
-	}
-	
-	public boolean remove(int val) {
-		
-		return true;
 	}
 	
 	private void printNode(Node<T> toPrint, int depth) {
